@@ -2,7 +2,13 @@ library(gplots)
 
 Stage.fpkm.table = read.table("GSE66582_stage_fpkm.txt",head=T,row.names = 1)
 
+
+
 Pt.g.normalize <- function(x) {
+  
+  # normalize gene expression level. 
+  # this fucntion convert gene expression level into probability,
+  # so can be fitted into channon entropy formula
   
   #normalized.values = vector(mode = "numeric",length = length(x))
   normalized.values = x/sum(x)
@@ -14,12 +20,17 @@ Pt.g.normalize <- function(x) {
 Hg.compute <- function(Pt.g){
   
   #take Pt.g as input
+  # compute shannon entropy for each gene
   
   sum(   -(Pt.g)*log2(Pt.g)   )
   
 } 
 
 Q.g.t.compute <- function(x){
+  
+  # compute Q statistics for each gene, 
+  # based on shannon entropy and  normalized gene expression level.
+  
   #Q.g.t.vector = vector(mode = "numeric",length = length(x))
   
   Pt.g = Pt.g.normalize(x)
@@ -35,6 +46,8 @@ Q.g.t.compute <- function(x){
 
 
 ########################
+# this function compute tissue specific shannon entropy 
+# for each gene and each tissue
 
 Q.gt.matrix.compute <- function(FPKM.table){
   
@@ -48,5 +61,10 @@ Q.gt.matrix.compute <- function(FPKM.table){
   return(Q.gt.matrix)
 }
 
+##############################
+## following are analysis part.
 
-b = Q.gt.matrix.compute(Stage.fpkm.table+0.01)
+
+Q.stat.matrix = Q.gt.matrix.compute(Stage.fpkm.table+0.01)
+
+
