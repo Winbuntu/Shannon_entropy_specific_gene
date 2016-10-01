@@ -1,4 +1,4 @@
-TPM = read.table("kallisto_TPM_merged_table_clean.txt",head=T,row.names = 1)
+TPM = read.table("kallisto_TPM_merged_table_clean_protein_coding.txt",head=T,row.names = 1)
 
 library(gplots)
 
@@ -94,3 +94,5 @@ heatmap.2(cor(log2(TPM.after.aggregate.after.sum.isoform+0.01),method = "spearma
 )
 
 # remember to check sum is done correctly
+
+save(TPM.after.aggregate.after.sum.isoform,file = "TPM.after.aggregate.after.sum.isoform.RData")
