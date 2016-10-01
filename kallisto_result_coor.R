@@ -52,4 +52,45 @@ heatmap.2(b2,
 )
 
 
+#### add up isoform expression level
 
+#test = "ENSMUST00000114730.7|ENSMUSG00000031134.16|OTTMUSG00000017821.5|OTTMUST00000043157.1|Rbmx-005|Rbmx|2019|protein_coding|"
+
+get.gene.name <- function(x) {strsplit(x,"|",fixed = T)[[1]][6]}
+
+#get.gene.name(test)
+
+p = sapply(as.vector(rownames(TPM.after.aggregate)), 
+           FUN = get.gene.name,simplify = T) 
+
+#unlist(p,use.names = F)
+
+#sapply(p, function(x){as.character(x[1])})
+
+#vvv = TPM.big
+#vvv$a = p
+
+TPM.after.aggregate.after.sum.isoform = 
+  aggregate(TPM.after.aggregate ,by=list(p),FUN = sum)
+
+rownames(TPM.after.aggregate.after.sum.isoform) = 
+  TPM.after.aggregate.after.sum.isoform$Group.1
+
+TPM.after.aggregate.after.sum.isoform = TPM.after.aggregate.after.sum.isoform[,-1]
+
+#warnings()
+
+
+
+heatmap.2(cor(log2(TPM.after.aggregate.after.sum.isoform+0.01),method = "spearman"),
+          trace="none",density="none",
+          #Colv = as.dendrogram(h),
+          key=T, #scale="row",
+          #Rowv = as.dendrogram(h.r),
+          dendrogram="both",
+          col=color.palette,
+          margins=c(15,15)
+          
+)
+
+# remember to check sum is done correctly
