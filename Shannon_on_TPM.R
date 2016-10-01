@@ -13,8 +13,8 @@ Q.stat.matrix = Q.gt.matrix.compute(Stage.fpkm.table+0.01)
 
 
 
-not.expressed.in.oocyte = Stage.fpkm.table$MII_oocyte <=0.1
-expressed.later.than.oocyte = (apply(Stage.fpkm.table[,c(3: (ncol(Stage.fpkm.table)-1) )],1,max) > 0.5)
+not.expressed.in.oocyte = Stage.fpkm.table$MII_oocyte <=0.5
+expressed.later.than.oocyte = (apply(Stage.fpkm.table[,c(3: (ncol(Stage.fpkm.table)-1) )],1,max) > 1)
 
 early.2.cell.Q.stst = (Q.stat.matrix[,3]<2)
 x2.cell.Q.stat = (Q.stat.matrix[,4]<2)
@@ -58,11 +58,12 @@ heatmap.2(log2(as.matrix((Stage.fpkm.table[ as.vector(na.omit(c(early.2.cell.lis
 #hg.stat = apply(Stage.fpkm.table+0.01,1,Hg.compute)
 
 
-unique(rownames(Stage.fpkm.table)[na.omit(c(early.2.cell.list,
+g = unique(rownames(Stage.fpkm.table)[na.omit(c(early.2.cell.list,
                                      x2.cell.list,
                                      x4.cell.list,
                                      x8.cell.list))])
 
+match("Xist",g)
 
 length(unique(na.omit(c(early.2.cell.list,
                         x2.cell.list,
